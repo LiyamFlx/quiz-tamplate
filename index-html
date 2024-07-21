@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Allocation Impact Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; transition: width 0.3s; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input[type="radio"] { display: none; }
+        .quiz-question input[type="radio"]:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-step active" data-step="1">
+                <div class="quiz-question">
+                    <p>Step 1: Input Values</p>
+                    <p>1. What is the size of the opportunity (S)?</p>
+                    <input type="radio" id="sizeOpportunity1" name="sizeOpportunity" value="1">
+                    <label for="sizeOpportunity1">Very Small (< $1 Million)</label>
+                    <input type="radio" id="sizeOpportunity2" name="sizeOpportunity" value="2">
+                    <label for="sizeOpportunity2">Small ($1 Million - $10 Million)</label>
+                    <input type="radio" id="sizeOpportunity4" name="sizeOpportunity" value="4">
+                    <label for="sizeOpportunity4">Medium ($10 Million - $100 Million)</label>
+                    <input type="radio" id="sizeOpportunity6" name="sizeOpportunity" value="6">
+                    <label for="sizeOpportunity6">Large ($100 Million - $1 Billion)</label>
+                    <input type="radio" id="sizeOpportunity8" name="sizeOpportunity" value="8">
+                    <label for="sizeOpportunity8">Very Large ($1 Billion - $10 Billion)</label>
+                    <input type="radio" id="sizeOpportunity10" name="sizeOpportunity" value="10">
+                    <label for="sizeOpportunity10">Extremely Large (> $10 Billion)</label>
+
+                    <p>2. What is the potential impact size (P)?</p>
+                    <input type="radio" id="potentialImpact1" name="potentialImpact" value="1">
+                    <label for="potentialImpact1">Low Impact</label>
+                    <input type="radio" id="potentialImpact2" name="potentialImpact" value="3">
+                    <label for="potentialImpact2">Moderate Impact</label>
+                    <input type="radio" id="potentialImpact3" name="potentialImpact" value="5">
+                    <label for="potentialImpact3">High Impact</label>
+                    <input type="radio" id="potentialImpact4" name="potentialImpact" value="7">
+                    <label for="potentialImpact4">Very High Impact</label>
+                    <input type="radio" id="potentialImpact5" name="potentialImpact" value="10">
+                    <label for="potentialImpact5">Transformational Impact</label>
+
+                    <p>3. What is the difficulty of execution (D)?</p>
+                    <input type="radio" id="difficultyExecution1" name="difficultyExecution" value="1">
+                    <label for="difficultyExecution1">Very Easy</label>
+                    <input type="radio" id="difficultyExecution2" name="difficultyExecution" value="2">
+                    <label for="difficultyExecution2">Easy</label>
+                    <input type="radio" id="difficultyExecution3" name="difficultyExecution" value="4">
+                    <label for="difficultyExecution3">Moderate</label>
+                    <input type="radio" id="difficultyExecution4" name="difficultyExecution" value="6">
+                    <label for="difficultyExecution4">Difficult</label>
+                    <input type="radio" id="difficultyExecution5" name="difficultyExecution" value="8">
+                    <label for="difficultyExecution5">Very Difficult</label>
+                    <input type="radio" id="difficultyExecution6" name="difficultyExecution" value="10">
+                    <label for="difficultyExecution6">Extremely Difficult</label>
+
+                    <p>4. What are the challenges in construction and operation (C)?</p>
+                    <input type="radio" id="challengeConstruction1" name="challengeConstruction" value="1">
+                    <label for="challengeConstruction1">Minimal Challenges</label>
+                    <input type="radio" id="challengeConstruction2" name="challengeConstruction" value="2">
+                    <label for="challengeConstruction2">Low Challenges</label>
+                    <input type="radio" id="challengeConstruction3" name="challengeConstruction" value="4">
+                    <label for="challengeConstruction3">Moderate Challenges</label>
+                    <input type="radio" id="challengeConstruction4" name="challengeConstruction" value="6">
+                    <label for="challengeConstruction4">High Challenges</label>
+                    <input type="radio" id="challengeConstruction5" name="challengeConstruction" value="8">
+                    <label for="challengeConstruction5">Extreme Challenges</label>
+                    <input type="radio" id="challengeConstruction6" name="challengeConstruction" value="10">
+                    <label for="challengeConstruction6">Catastrophic Challenges</label>
+                </div>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="2">
+                <div class="quiz-question">
+                    <p>Step 2: Set Weights</p>
+                    <p>1. Weight for the size of the opportunity (w_S):</p>
+                    <input type="text"```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Allocation Impact Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; transition: width 0.3s; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input[type="radio"] { display: none; }
+        .quiz-question input[type="radio"]:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-step active" data-step="1">
+                <div class="quiz-question">
+                    <p>Step 1: Input Values</p>
+                    <p>1. What is the size of the opportunity (S)?</p>
+                    <input type="radio" id="sizeOpportunity1" name="sizeOpportunity" value="1">
+                    <label for="sizeOpportunity1">Very Small (< $1 Million)</label>
+                    <input type="radio" id="sizeOpportunity2" name="sizeOpportunity" value="2">
+                    <label for="sizeOpportunity2">Small ($1 Million - $10 Million)</label>
+                    <input type="radio" id="sizeOpportunity4" name="sizeOpportunity" value="4">
+                    <label for="sizeOpportunity4">Medium ($10 Million - $100 Million)</label>
+                    <input type="radio" id="sizeOpportunity6" name="sizeOpportunity" value="6">
+                    <label for="sizeOpportunity6">Large ($100 Million - $1 Billion)</label>
+                    <input type="radio" id="sizeOpportunity8" name="sizeOpportunity" value="8">
+                    <label for="sizeOpportunity8">Very Large ($1 Billion - $10 Billion)</label>
+                    <input type="radio" id="sizeOpportunity10" name="sizeOpportunity" value="10">
+                    <label for="sizeOpportunity10">Extremely Large (> $10 Billion)</label>
+
+                    <p>2. What is the potential impact size (P)?</p>
+                    <input type="radio" id="potentialImpact1" name="potentialImpact" value="1">
+                    <label for="potentialImpact1">Low Impact</label>
+                    <input type="radio" id="potentialImpact2" name="potentialImpact" value="3">
+                    <label for="potentialImpact2">Moderate Impact</label>
+                    <input type="radio" id="potentialImpact3" name="potentialImpact" value="5">
+                    <label for="potentialImpact3">High Impact</label>
+                    <input type="radio" id="potentialImpact4" name="potentialImpact" value="7">
+                    <label for="potentialImpact4">Very High Impact</label>
+                    <input type="radio" id="potentialImpact5" name="potentialImpact" value="10">
+                    <label for="potentialImpact5">Transformational Impact</label>
+
+                    <p>3. What is the difficulty of execution (D)?</p>
+                    <input type="radio" id="difficultyExecution1" name="difficultyExecution" value="1">
+                    <label for="difficultyExecution1">Very Easy</label>
+                    <input type="radio" id="difficultyExecution2" name="difficultyExecution" value="2">
+                    <label for="difficultyExecution2">Easy</label>
+                    <input type="radio" id="difficultyExecution3" name="difficultyExecution" value="4">
+                    <label for="difficultyExecution3">Moderate</label>
+                    <input type="radio" id="difficultyExecution4" name="difficultyExecution" value="6">
+                    <label for="difficultyExecution4">Difficult</label>
+                    <input type="radio" id="difficultyExecution5" name="difficultyExecution" value="8">
+                    <label for="difficultyExecution5">Very Difficult</label>
+                    <input type="radio" id="difficultyExecution6" name="difficultyExecution" value="10">
+                    <label for="difficultyExecution6">Extremely Difficult</label>
+
+                    <p>4. What are the challenges in construction and operation (C)?</p>
+                    <input type="radio" id="challengeConstruction1" name="challengeConstruction" value="1">
+                    <label for="challengeConstruction1">Minimal Challenges</label>
+                    <input type="radio" id="challengeConstruction2" name="challengeConstruction" value="2">
+                    <label for="challengeConstruction2">Low Challenges</label>
+                    <input type="radio" id="challengeConstruction3" name="challengeConstruction" value="4">
+                    <label for="challengeConstruction3">Moderate Challenges</label>
+                    <input type="radio" id="challengeConstruction4" name="challengeConstruction" value="6">
+                    <label for="challengeConstruction4">High Challenges</label>
+                    <input type="radio" id="challengeConstruction5" name="challengeConstruction" value="8">
+                    <label for="challengeConstruction5">Extreme Challenges</label>
+                    <input type="radio" id="challengeConstruction6" name="challengeConstruction" value="10">
+                    <label for="challengeConstruction6">Catastrophic Challenges</label>
+                </div>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="2">
+                <div class="quiz-question">
+                    <p>Step 2: Set Weights</p>
+                    <p>1. Weight for the size of the opportunity (w_S):</p>
+                    <input type="text" id="weightSizeOpportunity" name="weightSizeOpportunity" readonly>
+                    <p>2. Weight for the potential impact size (w_P):</p>
+                    <input type="text" id="weightPotentialImpact" name="weightPotentialImpact" readonly>
+                    <p>3. Weight for the difficulty of execution (w_D):</p>
+                    <input type="text" id="weightDifficultyExecution" name="weightDifficultyExecution" readonly>
+                    <p>4. Weight for the challenges in construction and operation (w_C):</p>
+                    <input type="text" id="weightChallengeConstruction" name="weightChallengeConstruction" readonly>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="3">
+                <div class="quiz-question">
+                    <p>Step 3: Calculate Impact</p>
+                    <button type="button" onclick="calculateImpact()">Calculate Impact</button>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+            </div>
+        </form>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.quiz-step');
+        let currentStep = 0;
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+
+                if (currentStep === 1) {
+                    deriveWeights();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            document.querySelector('.progress-bar div').style.width = `${progress}%`;
+        }
+
+        function deriveWeights() {
+           Sure, here's the complete HTML and JavaScript code for the quiz, designed to look and behave like the quiz example you provided. It includes the weight calculation based on the selected answers.
+
+### HTML and JavaScript Code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Allocation Impact Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; transition: width 0.3s; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input[type="radio"] { display: none; }
+        .quiz-question input[type="radio"]:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-step active" data-step="1">
+                <div class="quiz-question">
+                    <p>Step 1: Input Values</p>
+                    <p>1. What is the size of the opportunity (S)?</p>
+                    <input type="radio" id="sizeOpportunity1" name="sizeOpportunity" value="1">
+                    <label for="sizeOpportunity1">Very Small (< $1 Million)</label>
+                    <input type="radio" id="sizeOpportunity2" name="sizeOpportunity" value="2">
+                    <label for="sizeOpportunity2">Small ($1 Million - $10 Million)</label>
+                    <input type="radio" id="sizeOpportunity4" name="sizeOpportunity" value="4">
+                    <label for="sizeOpportunity4">Medium ($10 Million - $100 Million)</label>
+                    <input type="radio" id="sizeOpportunity6" name="sizeOpportunity" value="6">
+                    <label for="sizeOpportunity6">Large ($100 Million - $1 Billion)</label>
+                    <input type="radio" id="sizeOpportunity8" name="sizeOpportunity" value="8">
+                    <label for="sizeOpportunity8">Very Large ($1 Billion - $10 Billion)</label>
+                    <input type="radio" id="sizeOpportunity10" name="sizeOpportunity" value="10">
+                    <label for="sizeOpportunity10">Extremely Large (> $10 Billion)</label>
+
+                    <p>2. What is the potential impact size (P)?</p>
+                    <input type="radio" id="potentialImpact1" name="potentialImpact" value="1">
+                    <label for="potentialImpact1">Low Impact</label>
+                    <input type="radio" id="potentialImpact2" name="potentialImpact" value="3">
+                    <label for="potentialImpact2">Moderate Impact</label>
+                    <input type="radio" id="potentialImpact3" name="potentialImpact" value="5">
+                    <label for="potentialImpact3">High Impact</label>
+                    <input type="radio" id="potentialImpact4" name="potentialImpact" value="7">
+                    <label for="potentialImpact4">Very High Impact</label>
+                    <input type="radio" id="potentialImpact5" name="potentialImpact" value="10">
+                    <label for="potentialImpact5">Transformational Impact</label>
+
+                    <p>3. What is the difficulty of execution (D)?</p>
+                    <input type="radio" id="difficultyExecution1" name="difficultyExecution" value="1">
+                    <label for="difficultyExecution1">Very Easy</label>
+                    <input type="radio" id="difficultyExecution2" name="difficultyExecution" value="2">
+                    <label for="difficultyExecution2">Easy</label>
+                    <input type="radio" id="difficultyExecution3" name="difficultyExecution" value="4">
+                    <label for="difficultyExecution3">Moderate</label>
+                    <input type="radio" id="difficultyExecution4" name="difficultyExecution" value="6">
+                    <label for="difficultyExecution4">Difficult</label>
+                    <input type="radio" id="difficultyExecution5" name="difficultyExecution" value="8">
+                    <label for="difficultyExecution5">Very Difficult</label>
+                    <input type="radio" id="difficultyExecution6" name="difficultyExecution" value="10">
+                    <label for="difficultyExecution6">Extremely Difficult</label>
+
+                    <p>4. What are the challenges in construction and operation (C)?</p>
+                    <input type="radio" id="challengeConstruction1" name="challengeConstruction" value="1">
+                    <label for="challengeConstruction1">Minimal Challenges</label>
+                    <input type="radio" id="challengeConstruction2" name="challengeConstruction" value="2">
+                    <label for="challengeConstruction2">Low Challenges</label>
+                    <input type="radio" id="challengeConstruction3" name="challengeConstruction" value="4">
+                    <label for="challengeConstruction3">Moderate Challenges</label>
+                    <input type="radio" id="challengeConstruction4" name="challengeConstruction" value="6">
+                    <label for="challengeConstruction4">High Challenges</label>
+                    <input type="radio" id="challengeConstruction5" name="challengeConstruction" value="8">
+                    <label for="challengeConstruction5">Extreme Challenges</label>
+                    <input type="radio" id="challengeConstruction6" name="challengeConstruction" value="10">
+                    <label for="challengeConstruction6">Catastrophic Challenges</label>
+                </div>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="2">
+                <div class="quiz-question">
+                    <p>Step 2: Set Weights</p>
+                    <p>1. Weight for the size of the opportunity (w_S):</p>
+                    <input type="text" id="weightSizeOpportunity" name="weightSizeOpportunity" readonly>
+                    <p>2. Weight for the potential impact size (w_P):</p>
+                    <input type="text" id="weightPotentialImpact" name="weightPotentialImpact" readonly>
+                    <p>3. Weight for the difficulty of execution (w_D):</p>
+                    <input type="text" id="weightDifficultyExecution" name="weightDifficultyExecution" readonly>
+                    <p>4. Weight for the challenges in construction and operation (w_C):</p>
+                    <input type="text" id="weightChallengeConstruction" name="weightChallengeConstruction" readonly>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="3">
+                <div class="quiz-question">
+                    <p>Step 3: Calculate Impact</p>
+                    <button type="button" onclick="calculateImpact()">Calculate Impact</button>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+            </div>
+        </form>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.quiz-step');
+        let currentStep = 0;
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+
+                if (currentStep === 1) {
+                    deriveWeights();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+Here's the complete HTML and JavaScript code for the quiz, with improved design and behavior. It includes deriving weights based on the selected answers, and each part of the quiz is split into separate steps for better user experience.
+
+### HTML and JavaScript Code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Allocation Impact Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; transition: width 0.3s; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input[type="radio"] { display: none; }
+        .quiz-question input[type="radio"]:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-step active" data-step="1">
+                <div class="quiz-question">
+                    <p>Step 1: Input Values</p>
+                    <p>1. What is the size of the opportunity (S)?</p>
+                    <input type="radio" id="sizeOpportunity1" name="sizeOpportunity" value="1">
+                    <label for="sizeOpportunity1">Very Small (< $1 Million)</label>
+                    <input type="radio" id="sizeOpportunity2" name="sizeOpportunity" value="2">
+                    <label for="sizeOpportunity2">Small ($1 Million - $10 Million)</label>
+                    <input type="radio" id="sizeOpportunity4" name="sizeOpportunity" value="4">
+                    <label for="sizeOpportunity4">Medium ($10 Million - $100 Million)</label>
+                    <input type="radio" id="sizeOpportunity6" name="sizeOpportunity" value="6">
+                    <label for="sizeOpportunity6">Large ($100 Million - $1 Billion)</label>
+                    <input type="radio" id="sizeOpportunity8" name="sizeOpportunity" value="8">
+                    <label for="sizeOpportunity8">Very Large ($1 Billion - $10 Billion)</label>
+                    <input type="radio" id="sizeOpportunity10" name="sizeOpportunity" value="10">
+                    <label for="sizeOpportunity10">Extremely Large (> $10 Billion)</label>
+
+                    <p>2. What is the potential impact size (P)?</p>
+                    <input type="radio" id="potentialImpact1" name="potentialImpact" value="1">
+                    <label for="potentialImpact1">Low Impact</label>
+                    <input type="radio" id="potentialImpact2" name="potentialImpact" value="3">
+                    <label for="potentialImpact2">Moderate Impact</label>
+                    <input type="radio" id="potentialImpact3" name="potentialImpact" value="5">
+                    <label for="potentialImpact3">High Impact</label>
+                    <input type="radio" id="potentialImpact4" name="potentialImpact" value="7">
+                    <label for="potentialImpact4">Very High Impact</label>
+                    <input type="radio" id="potentialImpact5" name="potentialImpact" value="10">
+                    <label for="potentialImpact5">Transformational Impact</label>
+
+                    <p>3. What is the difficulty of execution (D)?</p>
+                    <input type="radio" id="difficultyExecution1" name="difficultyExecution" value="1">
+                    <label for="difficultyExecution1">Very Easy</label>
+                    <input type="radio" id="difficultyExecution2" name="difficultyExecution" value="2">
+                    <label for="difficultyExecution2">Easy</label>
+                    <input type="radio" id="difficultyExecution3" name="difficultyExecution" value="4">
+                    <label for="difficultyExecution3">Moderate</label>
+                    <input type="radio" id="difficultyExecution4" name="difficultyExecution" value="6">
+                    <label for="difficultyExecution4">Difficult</label>
+                    <input type="radio" id="difficultyExecution5" name="difficultyExecution" value="8">
+                    <label for="difficultyExecution5">Very Difficult</label>
+                    <input type="radio" id="difficultyExecution6" name="difficultyExecution" value="10">
+                    <label for="difficultyExecution6">Extremely Difficult</label>
+
+                    <p>4. What are the challenges in construction and operation (C)?</p>
+                    <input type="radio" id="challengeConstruction1" name="challengeConstruction" value="1">
+                    <label for="challengeConstruction1">Minimal Challenges</label>
+                    <input type="radio" id="challengeConstruction2" name="challengeConstruction" value="2">
+                    <label for="challengeConstruction2">Low Challenges</label>
+                    <input type="radio" id="challengeConstruction3" name="challengeConstruction" value="4">
+                    <label for="challengeConstruction3">Moderate Challenges</label>
+                    <input type="radio" id="challengeConstruction4" name="challengeConstruction" value="6">
+                    <label for="challengeConstruction4">High Challenges</label>
+                    <input type="radio" id="challengeConstruction5" name="challengeConstruction" value="8">
+                    <label for="challengeConstruction5">Extreme Challenges</label>
+                    <input type="radio" id="challengeConstruction6" name="challengeConstruction" value="10">
+                    <label for="challengeConstruction6">Catastrophic Challenges</label>
+                </div>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="2">
+                <div class="quiz-question">
+                    <p>Step 2: Set Weights</p>
+                    <p>1. Weight for the size of the opportunity (w_S):</p>
+                    <input type="text" id="weightSizeOpportunity" name="weightSizeOpportunity" readonly>
+                    <p>2. Weight for the potential impact size (w_P):</p>
+                    <input type="text" id="weightPotentialImpact" name="weightPotentialImpact" readonly>
+                    <p>3. Weight for the difficulty of execution (w_D):</p>
+                    <input type="text" id="weightDifficultyExecution" name="weightDifficultyExecution" readonly>
+                    <p>4. Weight for the challenges in construction and operation (w_C):</p>
+                    <input type="text" id="weightChallengeConstruction" name="weightChallengeConstruction" readonly>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="3">
+                <div class="quiz-question">
+                    <p>Step 3: Calculate Impact</p>
+                    <button type="button" onclick="calculateImpact()">Calculate Impact</button>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+            </div>
+        </form>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.quiz-step');
+        let currentStep = 0;
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+
+                if (currentStep === 1) {
+                    deriveWeights();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+### HTML and JavaScript Code for the Quiz
+
+The following code includes the complete quiz, structured into steps with derived weights, and designed to look and behave like the quiz example provided:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Allocation Impact Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; transition: width 0.3s; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input[type="radio"] { display: none; }
+        .quiz-question input[type="radio"]:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-step active" data-step="1">
+                <div class="quiz-question">
+                    <p>Step 1: Input Values</p>
+                    <p>1. What is the size of the opportunity (S)?</p>
+                    <input type="radio" id="sizeOpportunity1" name="sizeOpportunity" value="1">
+                    <label for="sizeOpportunity1">Very Small (< $1 Million)</label>
+                    <input type="radio" id="sizeOpportunity2" name="sizeOpportunity" value="2">
+                    <label for="sizeOpportunity2">Small ($1 Million - $10 Million)</label>
+                    <input type="radio" id="sizeOpportunity4" name="sizeOpportunity" value="4">
+                    <label for="sizeOpportunity4">Medium ($10 Million - $100 Million)</label>
+                    <input type="radio" id="sizeOpportunity6" name="sizeOpportunity" value="6">
+                    <label for="sizeOpportunity6">Large ($100 Million - $1 Billion)</label>
+                    <input type="radio" id="sizeOpportunity8" name="sizeOpportunity" value="8">
+                    <label for="sizeOpportunity8">Very Large ($1 Billion - $10 Billion)</label>
+                    <input type="radio" id="sizeOpportunity10" name="sizeOpportunity" value="10">
+                    <label for="sizeOpportunity10">Extremely Large (> $10 Billion)</label>
+
+                    <p>2. What is the potential impact size (P)?</p>
+                    <input type="radio" id="potentialImpact1" name="potentialImpact" value="1">
+                    <label for="potentialImpact1">Low Impact</label>
+                    <input type="radio" id="potentialImpact2" name="potentialImpact" value="3">
+                    <label for="potentialImpact2">Moderate Impact</label>
+                    <input type="radio" id="potentialImpact3" name="potentialImpact" value="5">
+                    <label for="potentialImpact3">High Impact</label>
+                    <input type="radio" id="potentialImpact4" name="potentialImpact" value="7">
+                    <label for="potentialImpact4">Very High Impact</label>
+                    <input type="radio" id="potentialImpact5" name="potentialImpact" value="10">
+                    <label for="potentialImpact5">Transformational Impact</label>
+
+                    <p>3. What is the difficulty of execution (D)?</p>
+                    <input type="radio" id="difficultyExecution1" name="difficultyExecution" value="1">
+                    <label for="difficultyExecution1">Very Easy</label>
+                    <input type="radio" id="difficultyExecution2" name="difficultyExecution" value="2">
+                    <label for="difficultyExecution2">Easy</label>
+                    <input type="radio" id="difficultyExecution3" name="difficultyExecution" value="4">
+                    <label for="difficultyExecution3">Moderate</label>
+                    <input type="radio" id="difficultyExecution4" name="difficultyExecution" value="6">
+                    <label for="difficultyExecution4">Difficult</label>
+                    <input type="radio" id="difficultyExecution5" name="difficultyExecution" value="8">
+                    <label for="difficultyExecution5">Very Difficult</label>
+                    <input type="radio" id="difficultyExecution6" name="difficultyExecution" value="10">
+                    <label for="difficultyExecution6">Extremely Difficult</label>
+
+                    <p>4. What are the challenges in construction and operation (C)?</p>
+                    <input type="radio" id="challengeConstruction1" name="challengeConstruction" value="1">
+                    <label for="challengeConstruction1">Minimal Challenges</label>
+                    <input type="radio" id="challengeConstruction2" name="challengeConstruction" value="2">
+                    <label for="challengeConstruction2">Low Challenges</label>
+                    <input type="radio" id="challengeConstruction3" name="challengeConstruction" value="4">
+                    <label for="challengeConstruction3">Moderate Challenges</label>
+                    <input type="radio" id="challengeConstruction4" name="challengeConstruction" value="6">
+                    <label for="challengeConstruction4">High Challenges</label>
+                    <input type="radio" id="challengeConstruction5" name="challengeConstruction" value="8">
+                    <label for="challengeConstruction5">Extreme Challenges</label>
+                    <input type="radio" id="challengeConstruction6" name="challengeConstruction" value="10">
+                    <label for="challengeConstruction6">Catastrophic Challenges</label>
+                </div>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="2">
+                <div class="quiz-question">
+                    <p>Step 2: Set Weights</p>
+                    <p>1. Weight for the size of the opportunity (w_S):</p>
+                    <input type="text" id="weightSizeOpportunity" name="weightSizeOpportunity" readonly>
+                    <p>2. Weight for the potential impact size (w_P):</p>
+                    <input type="text" id="weightPotentialImpact" name="weightPotentialImpact" readonly>
+                    <p>3. Weight for the difficulty of execution (w_D):</p>
+                    <input type="text" id="weightDifficultyExecution" name="weightDifficultyExecution" readonly>
+                    <p>4. Weight for the challenges in construction and operation (w_C):</p>
+                    <input type="text" id="weightChallengeConstruction" name="weightChallengeConstruction" readonly>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="3">
+                <div class="quiz-question">
+                    <p>Step 3: Calculate Impact</p>
+                    <button type="button" onclick="calculateImpact()">Calculate Impact</button>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+            </div>
+        </form>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.quiz-step');
+        let currentStep = 0;
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+
+                if (currentStep === 1) {
+                    deriveWeights();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentStepHere's the complete HTML and JavaScript code for the quiz, designed to calculate derived weights and show the impact based on user inputs:
+
+### HTML and JavaScript Code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Allocation Impact Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; transition: width 0.3s; }
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input[type="radio"] { display: none; }
+        .quiz-question input[type="radio"]:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-step active" data-step="1">
+                <div class="quiz-question">
+                    <p>Step 1: Input Values</p>
+                    <p>1. What is the size of the opportunity (S)?</p>
+                    <input type="radio" id="sizeOpportunity1" name="sizeOpportunity" value="1">
+                    <label for="sizeOpportunity1">Very Small (< $1 Million)</label>
+                    <input type="radio" id="sizeOpportunity2" name="sizeOpportunity" value="2">
+                    <label for="sizeOpportunity2">Small ($1 Million - $10 Million)</label>
+                    <input type="radio" id="sizeOpportunity4" name="sizeOpportunity" value="4">
+                    <label for="sizeOpportunity4">Medium ($10 Million - $100 Million)</label>
+                    <input type="radio" id="sizeOpportunity6" name="sizeOpportunity" value="6">
+                    <label for="sizeOpportunity6">Large ($100 Million - $1 Billion)</label>
+                    <input type="radio" id="sizeOpportunity8" name="sizeOpportunity" value="8">
+                    <label for="sizeOpportunity8">Very Large ($1 Billion - $10 Billion)</label>
+                    <input type="radio" id="sizeOpportunity10" name="sizeOpportunity" value="10">
+                    <label for="sizeOpportunity10">Extremely Large (> $10 Billion)</label>
+
+                    <p>2. What is the potential impact size (P)?</p>
+                    <input type="radio" id="potentialImpact1" name="potentialImpact" value="1">
+                    <label for="potentialImpact1">Low Impact</label>
+                    <input type="radio" id="potentialImpact2" name="potentialImpact" value="3">
+                    <label for="potentialImpact2">Moderate Impact</label>
+                    <input type="radio" id="potentialImpact3" name="potentialImpact" value="5">
+                    <label for="potentialImpact3">High Impact</label>
+                    <input type="radio" id="potentialImpact4" name="potentialImpact" value="7">
+                    <label for="potentialImpact4">Very High Impact</label>
+                    <input type="radio" id="potentialImpact5" name="potentialImpact" value="10">
+                    <label for="potentialImpact5">Transformational Impact</label>
+
+                    <p>3. What is the difficulty of execution (D)?</p>
+                    <input type="radio" id="difficultyExecution1" name="difficultyExecution" value="1">
+                    <label for="difficultyExecution1">Very Easy</label>
+                    <input type="radio" id="difficultyExecution2" name="difficultyExecution" value="2">
+                    <label for="difficultyExecution2">Easy</label>
+                    <input type="radio" id="difficultyExecution3" name="difficultyExecution" value="4">
+                    <label for="difficultyExecution3">Moderate</label>
+                    <input type="radio" id="difficultyExecution4" name="difficultyExecution" value="6">
+                    <label for="difficultyExecution4">Difficult</label>
+                    <input type="radio" id="difficultyExecution5" name="difficultyExecution" value="8">
+                    <label for="difficultyExecution5">Very Difficult</label>
+                    <input type="radio" id="difficultyExecution6" name="difficultyExecution" value="10">
+                    <label for="difficultyExecution6">Extremely Difficult</label>
+
+                    <p>4. What are the challenges in construction and operation (C)?</p>
+                    <input type="radio" id="challengeConstruction1" name="challengeConstruction" value="1">
+                    <label for="challengeConstruction1">Minimal Challenges</label>
+                    <input type="radio" id="challengeConstruction2" name="challengeConstruction" value="2">
+                    <label for="challengeConstruction2">Low Challenges</label>
+                    <input type="radio" id="challengeConstruction3" name="challengeConstruction" value="4">
+                    <label for="challengeConstruction3">Moderate Challenges</label>
+                    <input type="radio" id="challengeConstruction4" name="challengeConstruction" value="6">
+                    <label for="challengeConstruction4">High Challenges</label>
+                    <input type="radio" id="challengeConstruction5" name="challengeConstruction" value="8">
+                    <label for="challengeConstruction5">Extreme Challenges</label>
+                    <input type="radio" id="challengeConstruction6" name="challengeConstruction" value="10">
+                    <label for="challengeConstruction6">Catastrophic Challenges</label>
+                </div>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="2">
+                <div class="quiz-question">
+                    <p>Step 2: Set Weights</p>
+                    <p>1. Weight for the size of the opportunity (w_S):</p>
+                    <input type="text" id="weightSizeOpportunity" name="weightSizeOpportunity" readonly>
+                    <p>2. Weight for the potential impact size (w_P):</p>
+                    <input type="text" id="weightPotentialImpact" name="weightPotentialImpact" readonly>
+                    <p>3. Weight for the difficulty of execution (w_D):</p>
+                    <input type="text" id="weightDifficultyExecution" name="weightDifficultyExecution" readonly>
+                    <p>4. Weight for the challenges in construction and operation (w_C):</p>
+                    <input type="text" id="weightChallengeConstruction" name="weightChallengeConstruction" readonly>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+
+            <div class="quiz-step" data-step="3">
+                <div class="quiz-question">
+                    <p>Step 3: Calculate Impact</p>
+                    <button type="button" onclick="calculateImpact()">Calculate Impact</button>
+                </div>
+                <button type="button" onclick="previousStep()">Back</button>
+            </div>
+        </form>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.quiz-step');
+        let currentStep = 0;
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].classList.remove('active');
+                currentStep++;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+
+                if (currentStep === 1) {
+                    deriveWeights();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                steps[currentStep].classList.remove('active');
+                currentStep--;
+                steps[currentStep].classList.add('active');
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentStep + 1)
