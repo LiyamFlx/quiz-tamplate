@@ -14,7 +14,7 @@ This is a simple multi-step quiz template created with HTML, CSS, and JavaScript
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/LiyamFlx/quiz-template.git
+    git clone https://liyamflx.github.io/quiz-tamplate/
     ```
 
 2. Navigate to the project directory:
