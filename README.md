@@ -10,7 +10,7 @@ This project contains a simple quiz to help evaluate business opportunities usin
 
 ## Usage
 
-1. **Clone the Repository**: `git clone https://github.com/your-repo/quiz-tamplate
+1. **Clone the Repository**: `git clone https://github.com/LiyamFlx/quiz-tamplate
 2. **Open `index.html` in a browser**: You can double-click the `index.html` file to open it in your default web browser and test the quiz locally.
 3. **Embed the Quiz**: To embed the quiz on a HubSpot blog or any other website, use the provided embed code snippet below.
 
